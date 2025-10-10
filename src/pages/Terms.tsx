@@ -18,7 +18,7 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
               <p className="text-muted-foreground">
-                By accessing and using ArticleHub, you accept and agree to be bound by the terms and provision 
+                By accessing and using Writify, you accept and agree to be bound by the terms and provision 
                 of this agreement. If you do not agree to these terms, please do not use our service.
               </p>
             </section>
@@ -36,7 +36,7 @@ const Terms = () => {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4">3. Content Guidelines</h2>
-              <p className="text-muted-foreground mb-3">When creating content on ArticleHub, you must not:</p>
+              <p className="text-muted-foreground mb-3">When creating content on Writify, you must not:</p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Post illegal, harmful, or offensive content</li>
                 <li>Violate intellectual property rights</li>
@@ -49,9 +49,9 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4">4. Intellectual Property</h2>
               <p className="text-muted-foreground">
-                You retain ownership of content you create on ArticleHub. By posting content, you grant us a 
+                You retain ownership of content you create on Writify. By posting content, you grant us a 
                 worldwide, non-exclusive license to use, display, and distribute your content on our platform. 
-                ArticleHub and its original content remain our property.
+                Writify and its original content remain our property.
               </p>
             </section>
 
@@ -98,7 +98,7 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4">9. Disclaimer</h2>
               <p className="text-muted-foreground">
-                ArticleHub is provided "as is" without warranties of any kind. We do not guarantee 
+                Writify is provided "as is" without warranties of any kind. We do not guarantee 
                 uninterrupted access or error-free service. We are not liable for any content posted by users.
               </p>
             </section>
@@ -114,7 +114,7 @@ const Terms = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4">11. Contact</h2>
               <p className="text-muted-foreground">
-                For questions about these terms, please contact us at legal@articlehub.com
+                For questions about these terms, please contact us at legal@Writify.com
               </p>
             </section>
           </div>

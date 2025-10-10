@@ -13,7 +13,7 @@ export const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <BookOpen className="h-6 w-6 text-primary" />
               <span className="text-xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                ArticleHub
+                Writify
               </span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
@@ -55,7 +55,7 @@ export const Footer = () => {
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {currentYear} ArticleHub. All rights reserved.</p>
+          <p>&copy; {currentYear} Writify. All rights reserved.</p>
         </div>
       </div>
     </footer>

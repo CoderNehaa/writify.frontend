@@ -18,7 +18,7 @@ const Privacy = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
               <p className="text-muted-foreground">
-                Welcome to ArticleHub. We respect your privacy and are committed to protecting your personal data. 
+                Welcome to Writify. We respect your privacy and are committed to protecting your personal data. 
                 This privacy policy will inform you about how we look after your personal data when you visit our 
                 website and tell you about your privacy rights.
               </p>
@@ -84,7 +84,7 @@ const Privacy = () => {
               <h2 className="text-2xl font-semibold mb-4">7. Contact Us</h2>
               <p className="text-muted-foreground">
                 If you have any questions about this privacy policy or our privacy practices, please contact 
-                us at privacy@articlehub.com
+                us at privacy@Writify.com
               </p>
             </section>
           </div>

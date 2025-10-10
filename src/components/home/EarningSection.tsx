@@ -41,7 +41,7 @@ export const EarningSection = () => {
               Turn Your Writing into Income
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
-              ArticleHub provides multiple ways to monetize your content. From paid articles 
+              Writify provides multiple ways to monetize your content. From paid articles 
               to premium memberships, you have full control over how you earn.
             </p>
             

@@ -65,7 +65,7 @@ const Auth = () => {
                 <BookOpen className="h-6 w-6 text-primary-foreground" />
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2">Welcome to ArticleHub</h1>
+            <h1 className="text-3xl font-bold mb-2">Welcome to Writify</h1>
             <p className="text-muted-foreground">Join our community of writers and readers</p>
           </div>
 

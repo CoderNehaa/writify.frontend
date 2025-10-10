@@ -13,7 +13,7 @@ const About = () => {
         <section className="py-20 bg-gradient-to-br from-primary/5 via-transparent to-accent/5">
           <div className="container max-w-4xl text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About ArticleHub
+              About Writify
             </h1>
             <p className="text-xl text-muted-foreground">
               Empowering writers to share their voice and earn from their passion
@@ -26,7 +26,7 @@ const About = () => {
             <div className="prose prose-lg max-w-none">
               <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                ArticleHub was created with a simple yet powerful vision: to provide a platform where 
+                Writify was created with a simple yet powerful vision: to provide a platform where 
                 writers can freely express their ideas, build meaningful connections with readers, and 
                 earn a sustainable income from their creative work.
               </p>
@@ -73,9 +73,9 @@ const About = () => {
 
               <h2 className="text-3xl font-bold mb-6">Join Our Community</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Whether you're a seasoned writer or just starting out, ArticleHub provides the tools 
+                Whether you're a seasoned writer or just starting out, Writify provides the tools 
                 and community support you need to succeed. Join thousands of writers who have already 
-                made ArticleHub their home for creative expression and professional growth.
+                made Writify their home for creative expression and professional growth.
               </p>
 
               <div className="flex gap-4 justify-center mt-8">
