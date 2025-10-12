@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Home, FileText, Grid, PenSquare, Bookmark } from "lucide-react";
+import { Home, FileText, Grid, PenSquare, Bookmark, Crown, Info, Mail, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface LeftSidebarProps {
@@ -12,9 +12,12 @@ interface LeftSidebarProps {
 const navigationItems = [
   { title: "Home", href: "/", icon: Home },
   { title: "Articles", href: "/articles", icon: FileText },
+  { title: "Write Article", href: "/write", icon: PenSquare },
   { title: "Categories", href: "/categories", icon: Grid },
-  { title: "Write", href: "/write", icon: PenSquare },
-  { title: "Bookmarks", href: "/bookmarks", icon: Bookmark },
+  { title: "Membership", href: "/membership", icon: Crown },
+  { title: "About", href: "/about", icon: Info },
+  { title: "Contact", href: "/contact", icon: Mail },
+  { title: "Privacy", href: "/privacy", icon: Shield },
 ];
 
 // Mock following users

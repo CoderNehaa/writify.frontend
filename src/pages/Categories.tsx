@@ -10,7 +10,7 @@ const categories = [
     id: "1",
     name: "Technology",
     slug: "technology",
-    description: "Latest trends in tech, programming, and innovation",
+    description: "Latest trends in tech and innovation",
     articleCount: 1250,
     color: "from-blue-500 to-cyan-500",
   },
@@ -18,7 +18,7 @@ const categories = [
     id: "2",
     name: "Business",
     slug: "business",
-    description: "Entrepreneurship, startups, and business insights",
+    description: "Entrepreneurship and startups",
     articleCount: 850,
     color: "from-green-500 to-emerald-500",
   },
@@ -26,7 +26,7 @@ const categories = [
     id: "3",
     name: "Lifestyle",
     slug: "lifestyle",
-    description: "Health, wellness, and personal development",
+    description: "Health and wellness",
     articleCount: 620,
     color: "from-pink-500 to-rose-500",
   },
@@ -34,7 +34,7 @@ const categories = [
     id: "4",
     name: "Education",
     slug: "education",
-    description: "Learning resources, tutorials, and academic insights",
+    description: "Learning and tutorials",
     articleCount: 540,
     color: "from-purple-500 to-violet-500",
   },
@@ -42,17 +42,41 @@ const categories = [
     id: "5",
     name: "Health",
     slug: "health",
-    description: "Medical insights, fitness, and nutrition",
+    description: "Fitness and nutrition",
     articleCount: 480,
-    color: "from-red-500 to-orange-500",
+    color: "from-orange-500 to-red-500",
   },
   {
     id: "6",
     name: "Travel",
     slug: "travel",
-    description: "Destinations, travel tips, and adventures",
+    description: "Destinations and adventures",
     articleCount: 390,
-    color: "from-teal-500 to-cyan-500",
+    color: "from-teal-500 to-emerald-500",
+  },
+  {
+    id: "7",
+    name: "Food",
+    slug: "food",
+    description: "Recipes and culinary arts",
+    articleCount: 320,
+    color: "from-yellow-500 to-orange-500",
+  },
+  {
+    id: "8",
+    name: "Fashion",
+    slug: "fashion",
+    description: "Style and trends",
+    articleCount: 280,
+    color: "from-fuchsia-500 to-pink-500",
+  },
+  {
+    id: "9",
+    name: "Science",
+    slug: "science",
+    description: "Research and discoveries",
+    articleCount: 450,
+    color: "from-indigo-500 to-blue-500",
   },
 ];
 
@@ -70,29 +94,29 @@ const Categories = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {categories.map((category) => (
               <Link
                 key={category.id}
                 to={`/articles?category=${category.slug}`}
                 className="group"
               >
-                <Card className="h-full hover-lift shadow-card border-0 bg-gradient-card overflow-hidden">
-                  <div className={`h-2 bg-gradient-to-r ${category.color}`} />
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <CardTitle className="text-2xl group-hover:text-primary transition-colors">
+                <Card className="h-full hover-lift border-0 overflow-hidden transition-all">
+                  <div className={`h-1.5 bg-gradient-to-r ${category.color}`} />
+                  <CardHeader className="p-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
                         {category.name}
                       </CardTitle>
-                      <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                      <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
                     </div>
-                    <CardDescription className="text-base">
+                    <CardDescription className="text-sm line-clamp-2">
                       {category.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <Badge variant="secondary">
-                      {category.articleCount.toLocaleString()} articles
+                  <CardContent className="p-4 pt-0">
+                    <Badge variant="secondary" className="text-xs">
+                      {category.articleCount.toLocaleString()}
                     </Badge>
                   </CardContent>
                 </Card>

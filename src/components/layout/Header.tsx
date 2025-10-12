@@ -1,12 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BookOpen, Search } from "lucide-react";
 
 export const Header = () => {
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/auth";
+  const isArticlesPage = location.pathname === "/articles";
+  
   // TODO: Replace with actual auth state
   const isAuthenticated = false;
+
+  if (isAuthPage) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -18,17 +26,19 @@ export const Header = () => {
           </span>
         </Link>
 
-        <div className="flex-1 max-w-2xl mx-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search articles..."
-              className="pl-10"
-            />
+        {isArticlesPage && (
+          <div className="flex-1 max-w-2xl mx-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search articles..."
+                className="pl-10"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex items-center gap-4 flex-shrink-0">
+        <div className={`flex items-center gap-4 flex-shrink-0 ${!isArticlesPage ? 'ml-auto' : ''}`}>
           {isAuthenticated ? (
             <Link to="/profile">
               <Avatar className="h-9 w-9 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
