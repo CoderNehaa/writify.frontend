@@ -1,4 +1,4 @@
-interface User {
+interface IUser {
   id: string;
   email: string;
   username: string;
@@ -14,7 +14,7 @@ interface User {
   articlesPosted: number;
 }
 
-interface MembershipPlan {
+interface IMembershipPlan {
   id: string;
   name: string;
   price: number;
@@ -23,7 +23,7 @@ interface MembershipPlan {
   isPopular?: boolean;
 }
 
-interface Transaction {
+interface ITransaction {
   id: string;
   type: 'membership' | 'article_purchase';
   amount: number;
@@ -32,7 +32,7 @@ interface Transaction {
   status: 'completed' | 'pending' | 'failed';
 }
 
-interface Notification {
+interface INotification {
   id: string;
   type: 'follow' | 'article' | 'hashtag';
   title: string;

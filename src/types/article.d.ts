@@ -1,4 +1,4 @@
-interface Article {
+interface IArticle {
   id: string;
   title: string;
   description: string;
@@ -17,7 +17,7 @@ interface Article {
   isBookmarked?: boolean;
 }
 
-interface Author {
+interface IAuthor {
   id: string;
   name: string;
   username: string;
@@ -29,7 +29,7 @@ interface Author {
   isFollowing?: boolean;
 }
 
-interface Category {
+interface ICategory {
   id: string;
   name: string;
   slug: string;
@@ -37,7 +37,7 @@ interface Category {
   articleCount: number;
 }
 
-interface Comment {
+interface IComment {
   id: string;
   content: string;
   author: Author;
@@ -45,7 +45,7 @@ interface Comment {
   likes: number;
 }
 
-interface ArticleFilters {
+interface IArticleFilters {
   search?: string;
   category?: string;
   tags?: string[];
