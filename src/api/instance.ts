@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "@/constants/config";
 import { ROUTES_PATH } from "@/utils/routesPath";
+import { toast } from "react-toastify";
 
 const apiInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -9,10 +10,6 @@ const apiInstance = axios.create({
 
 apiInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
     return config;
   },
   (error) => {
@@ -29,7 +26,7 @@ apiInstance.interceptors.response.use(
 
     if (response) {
       if (response.status === 401) {
-        console.error("Unauthorized");
+        toast.error("Unauthorized");
         localStorage.clear();
         if (window.location.href !== "/") {
           window.location.href = ROUTES_PATH.AUTH.LOGIN;
@@ -40,14 +37,14 @@ apiInstance.interceptors.response.use(
       } else if (response.status === 400) {
         const errorMessage =
           response.data?.message || "Something went wrong. Try Later";
-        console.error(errorMessage);
+        toast.error(errorMessage);
       } else {
         console.error(
           response.data?.message || "Something went wrong. Try Later"
         );
       }
     } else {
-      console.error("Network error");
+      toast.error("Network error");
     }
 
     return Promise.reject(error);

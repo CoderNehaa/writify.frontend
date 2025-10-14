@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Crown, Trash2 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const Settings = () => {
