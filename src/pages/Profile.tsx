@@ -24,7 +24,7 @@ const Profile = () => {
     isFollowing: false,
   };
 
-  const mockArticles: Article[] = [
+  const mockArticles: IArticle[] = [
     {
       id: "1",
       title: "Getting Started with React and TypeScript",

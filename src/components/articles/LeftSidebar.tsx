@@ -6,7 +6,7 @@ import { Home, FileText, Grid, PenSquare, Bookmark, Crown, Info, Mail, Shield } 
 import { cn } from "@/lib/utils";
 
 interface LeftSidebarProps {
-  followingUsers?: User[];
+  followingUsers?: IUser[];
 }
 
 const navigationItems = [
@@ -21,7 +21,7 @@ const navigationItems = [
 ];
 
 // Mock following users
-const mockFollowingUsers: User[] = [
+const mockFollowingUsers: IUser[] = [
   {
     id: "1",
     name: "Sarah Johnson",

@@ -10,3 +10,8 @@ interface ISignInPayload {
   email: string;
   password: string;
 }
+
+interface IVerifyPayload {
+  email: string;
+  otp: string;
+}

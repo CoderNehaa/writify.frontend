@@ -6,7 +6,7 @@ import { Hash, Bookmark } from "lucide-react";
 
 interface RightSidebarProps {
   recommendedTopics?: string[];
-  savedArticles?: Article[];
+  savedArticles?: IArticle[];
 }
 
 // Mock data
@@ -18,7 +18,7 @@ const mockTopics = [
   "Mindfulness",
 ];
 
-const mockSavedArticles: Article[] = [
+const mockSavedArticles: IArticle[] = [
   {
     id: "1",
     title: "Getting Started with React",

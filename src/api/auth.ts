@@ -13,3 +13,7 @@ export const checkUsernameService = async (username: string) => {
   const res = await apiInstance.post(apiEndpoints.checkUsername, { username });
   return res.data.usernameAvailable;
 };
+
+export const verifyService = async (payload: IVerifyPayload) => {
+  return await apiInstance.post(apiEndpoints.verify, payload);
+};

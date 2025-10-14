@@ -31,3 +31,9 @@ export const signUpSchema = Yup.object({
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm password is required"),
 });
+
+export const verifySchema = Yup.object({
+  otp: Yup.string()
+    .matches(/^[0-9]{6}$/, "OTP must be exactly 6 digits")
+    .required("OTP is required"),
+});
