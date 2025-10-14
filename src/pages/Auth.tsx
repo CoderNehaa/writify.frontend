@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Eye, EyeOff } from "lucide-react";
+import { BookOpen, Eye, EyeOff, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const SocialButton = ({ provider, icon }: { provider: string; icon: React.ReactNode }) => {
@@ -29,37 +31,103 @@ const SocialButton = ({ provider, icon }: { provider: string; icon: React.ReactN
   );
 };
 
+// Mock username availability check - replace with actual API call
+const checkUsernameAvailability = async (username: string): Promise<boolean> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const takenUsernames = ["admin", "user", "test", "demo"];
+  return !takenUsernames.includes(username.toLowerCase());
+};
+
+const signInSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .max(8, "Password must not exceed 8 characters")
+    .required("Password is required"),
+});
+
+const signUpSchema = Yup.object({
+  name: Yup.string()
+    .required("Full name is required"),
+  username: Yup.string()
+    .min(3, "Username must be at least 3 characters")
+    .max(8, "Username must not exceed 8 characters")
+    .matches(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores")
+    .required("Username is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .max(8, "Password must not exceed 8 characters")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
+});
+
 const Auth = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const defaultMode = searchParams.get("mode") === "signup" ? "signup" : "signin";
   
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showSignInPassword, setShowSignInPassword] = useState(false);
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [checkingUsername, setCheckingUsername] = useState(false);
 
-  const handleSignIn = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement actual authentication
-    toast.success("Signed in successfully!");
-    navigate("/");
-  };
+  const signInFormik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: signInSchema,
+    onSubmit: (values) => {
+      // TODO: Implement actual authentication
+      toast.success("Signed in successfully!");
+      navigate("/");
+    },
+  });
 
-  const handleSignUp = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match!");
-      return;
-    }
-    // TODO: Implement actual authentication
-    toast.success("Account created successfully!");
-    navigate("/");
-  };
+  const signUpFormik = useFormik({
+    initialValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: signUpSchema,
+    onSubmit: (values) => {
+      if (!usernameAvailable) {
+        toast.error("Please choose an available username");
+        return;
+      }
+      // TODO: Implement actual authentication
+      toast.success("Account created successfully!");
+      navigate("/");
+    },
+  });
+
+  // Check username availability
+  useEffect(() => {
+    const checkUsername = async () => {
+      if (signUpFormik.values.username.length >= 3 && signUpFormik.values.username.length <= 8) {
+        setCheckingUsername(true);
+        const available = await checkUsernameAvailability(signUpFormik.values.username);
+        setUsernameAvailable(available);
+        setCheckingUsername(false);
+      } else {
+        setUsernameAvailable(null);
+      }
+    };
+
+    const timeoutId = setTimeout(checkUsername, 500);
+    return () => clearTimeout(timeoutId);
+  }, [signUpFormik.values.username]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -91,7 +159,7 @@ const Auth = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSignIn} className="space-y-4">
+                  <form onSubmit={signInFormik.handleSubmit} className="space-y-4">
                     <div className="space-y-3">
                       <SocialButton 
                         provider="Google" 
@@ -131,10 +199,11 @@ const Auth = () => {
                         id="signin-email"
                         type="email"
                         placeholder="name@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
+                        {...signInFormik.getFieldProps("email")}
                       />
+                      {signInFormik.touched.email && signInFormik.errors.email && (
+                        <p className="text-sm text-destructive">{signInFormik.errors.email}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signin-password">Password</Label>
@@ -142,10 +211,9 @@ const Auth = () => {
                         <Input
                           id="signin-password"
                           type={showSignInPassword ? "text" : "password"}
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
+                          placeholder="Enter your password"
                           className="pr-10"
+                          {...signInFormik.getFieldProps("password")}
                         />
                         <Button
                           type="button"
@@ -161,8 +229,16 @@ const Auth = () => {
                           )}
                         </Button>
                       </div>
+                      {signInFormik.touched.password && signInFormik.errors.password && (
+                        <p className="text-sm text-destructive">{signInFormik.errors.password}</p>
+                      )}
                     </div>
-                    <Button type="submit" className="w-full" variant="hero">
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      variant="hero"
+                      disabled={!signInFormik.isValid || !signInFormik.dirty}
+                    >
                       Sign In
                     </Button>
                     <div className="text-center">
@@ -184,7 +260,7 @@ const Auth = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSignUp} className="space-y-4">
+                  <form onSubmit={signUpFormik.handleSubmit} className="space-y-4">
                     <div className="space-y-3">
                       <SocialButton 
                         provider="Google" 
@@ -223,20 +299,42 @@ const Auth = () => {
                       <Input
                         id="signup-name"
                         placeholder="John Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
+                        {...signUpFormik.getFieldProps("name")}
                       />
+                      {signUpFormik.touched.name && signUpFormik.errors.name && (
+                        <p className="text-sm text-destructive">{signUpFormik.errors.name}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-username">Username</Label>
-                      <Input
-                        id="signup-username"
-                        placeholder="johndoe"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                      />
+                      <div className="relative">
+                        <Input
+                          id="signup-username"
+                          placeholder="johndoe"
+                          className="pr-10"
+                          {...signUpFormik.getFieldProps("username")}
+                        />
+                        <div className="absolute right-0 top-0 h-full px-3 flex items-center">
+                          {checkingUsername && (
+                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                          )}
+                          {!checkingUsername && usernameAvailable === true && (
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                          )}
+                          {!checkingUsername && usernameAvailable === false && (
+                            <XCircle className="h-4 w-4 text-destructive" />
+                          )}
+                        </div>
+                      </div>
+                      {signUpFormik.touched.username && signUpFormik.errors.username && (
+                        <p className="text-sm text-destructive">{signUpFormik.errors.username}</p>
+                      )}
+                      {usernameAvailable === false && !signUpFormik.errors.username && (
+                        <p className="text-sm text-destructive">Username is already taken</p>
+                      )}
+                      {usernameAvailable === true && !signUpFormik.errors.username && (
+                        <p className="text-sm text-green-600">Username is available</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-email">Email</Label>
@@ -244,10 +342,11 @@ const Auth = () => {
                         id="signup-email"
                         type="email"
                         placeholder="name@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
+                        {...signUpFormik.getFieldProps("email")}
                       />
+                      {signUpFormik.touched.email && signUpFormik.errors.email && (
+                        <p className="text-sm text-destructive">{signUpFormik.errors.email}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-password">Password</Label>
@@ -255,10 +354,9 @@ const Auth = () => {
                         <Input
                           id="signup-password"
                           type={showPassword ? "text" : "password"}
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
+                          placeholder="Enter your password"
                           className="pr-10"
+                          {...signUpFormik.getFieldProps("password")}
                         />
                         <Button
                           type="button"
@@ -274,6 +372,9 @@ const Auth = () => {
                           )}
                         </Button>
                       </div>
+                      {signUpFormik.touched.password && signUpFormik.errors.password && (
+                        <p className="text-sm text-destructive">{signUpFormik.errors.password}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="signup-confirm-password">Confirm Password</Label>
@@ -281,10 +382,9 @@ const Auth = () => {
                         <Input
                           id="signup-confirm-password"
                           type={showConfirmPassword ? "text" : "password"}
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          required
+                          placeholder="Confirm your password"
                           className="pr-10"
+                          {...signUpFormik.getFieldProps("confirmPassword")}
                         />
                         <Button
                           type="button"
@@ -300,8 +400,16 @@ const Auth = () => {
                           )}
                         </Button>
                       </div>
+                      {signUpFormik.touched.confirmPassword && signUpFormik.errors.confirmPassword && (
+                        <p className="text-sm text-destructive">{signUpFormik.errors.confirmPassword}</p>
+                      )}
                     </div>
-                    <Button type="submit" className="w-full" variant="hero">
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      variant="hero"
+                      disabled={!signUpFormik.isValid || !signUpFormik.dirty || usernameAvailable !== true}
+                    >
                       Create Account
                     </Button>
                   </form>
