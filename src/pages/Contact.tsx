@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Twitter, Linkedin } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const [name, setName] = useState("");
