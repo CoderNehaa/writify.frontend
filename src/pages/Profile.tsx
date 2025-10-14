@@ -6,54 +6,47 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArticleCard } from "@/components/articles/ArticleCard";
 import { Users, FileText, Flag } from "lucide-react";
+import useAuthStore from "@/store/authStore";
+import { useQuery } from "@tanstack/react-query";
+import { getUserByIdService } from "@/api/user";
+import { useState } from "react";
+import withAuth from "@/hoc/withAuth";
 
 const Profile = () => {
-  const { userId } = useParams();
-  const isOwnProfile = true; // TODO: Check if viewing own profile
+  const { currentUser } = useAuthStore();
+  const userId = useParams().userId || currentUser?._id || "";
+  const isOwnProfile = currentUser?._id === userId ? true : false;
+  const [articles, setArticles] = useState([]);
 
-  // Mock data - TODO: Replace with actual API call
-  const user = {
-    id: "1",
-    name: "Sarah Johnson",
-    username: "sarahj",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-    bio: "Full-stack developer passionate about web technologies. Writing about React, TypeScript, and modern web development.",
-    followersCount: 1250,
-    followingCount: 340,
-    articlesCount: 45,
-    isFollowing: false,
-  };
-
-  const mockArticles: IArticle[] = [
-    {
-      id: "1",
-      title: "Getting Started with React and TypeScript",
-      description: "Learn how to build type-safe React applications using TypeScript.",
-      content: "",
-      author: user,
-      category: { id: "1", name: "Technology", slug: "technology", articleCount: 1250 },
-      tags: ["react", "typescript", "webdev"],
-      isPaid: false,
-      likes: 234,
-      commentsCount: 45,
-      createdAt: "2024-01-15T10:00:00Z",
-      updatedAt: "2024-01-15T10:00:00Z",
-      readTime: 8,
+  const { data: user } = useQuery({
+    queryKey: ["user-profile", userId],
+    queryFn: async () => {
+      if (currentUser?._id == userId) {
+        return currentUser;
+      } else {
+        return await getUserByIdService(userId);
+      }
     },
-  ];
+  });
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1 py-8">
         <div className="container">
           <div className="max-w-4xl mx-auto">
             <div className="bg-gradient-card rounded-lg p-8 shadow-card mb-8">
               <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="text-2xl">{user.name[0]}</AvatarFallback>
+                  <AvatarImage src={user.profilePicture} alt={user.name} />
+                  <AvatarFallback className="text-2xl">
+                    {user.username[0]}
+                  </AvatarFallback>
                 </Avatar>
 
                 <div className="flex-1">
@@ -63,15 +56,21 @@ const Profile = () => {
 
                   <div className="flex gap-6 text-sm">
                     <div>
-                      <span className="font-semibold">{user.followersCount}</span>{" "}
+                      <span className="font-semibold">
+                        {user.followersCount || 0}
+                      </span>{" "}
                       <span className="text-muted-foreground">Followers</span>
                     </div>
                     <div>
-                      <span className="font-semibold">{user.followingCount}</span>{" "}
+                      <span className="font-semibold">
+                        {user.followingCount || 0}
+                      </span>{" "}
                       <span className="text-muted-foreground">Following</span>
                     </div>
                     <div>
-                      <span className="font-semibold">{user.articlesCount}</span>{" "}
+                      <span className="font-semibold">
+                        {user.articlesCount || 0}
+                      </span>{" "}
                       <span className="text-muted-foreground">Articles</span>
                     </div>
                   </div>
@@ -113,7 +112,7 @@ const Profile = () => {
 
               <TabsContent value="articles" className="mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {mockArticles.map((article) => (
+                  {articles.map((article) => (
                     <ArticleCard key={article.id} article={article} />
                   ))}
                 </div>
@@ -136,4 +135,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withAuth(Profile);

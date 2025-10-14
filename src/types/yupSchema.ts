@@ -11,7 +11,7 @@ export const signInSchema = Yup.object({
 });
 
 export const signUpSchema = Yup.object({
-  name: Yup.string().required("Full name is required"),
+  fullName: Yup.string().required("Full name is required"),
   username: Yup.string()
     .min(3, "Username must be at least 3 characters")
     .max(8, "Username must not exceed 8 characters")
@@ -32,7 +32,7 @@ export const signUpSchema = Yup.object({
     .required("Confirm password is required"),
 });
 
-export const verifySchema = Yup.object({
+export const verifyOTPSchema = Yup.object({
   otp: Yup.string()
     .matches(/^[0-9]{6}$/, "OTP must be exactly 6 digits")
     .required("OTP is required"),

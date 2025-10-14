@@ -20,6 +20,7 @@ import Membership from "./pages/Membership";
 import WriteArticle from "./pages/WriteArticle";
 import NotFound from "./pages/NotFound";
 import Verify from "./pages/Verify";
+import { ROUTES_PATH } from "./utils/routesPath";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +30,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/articles" element={<Articles />} />
+          <Route path={ROUTES_PATH.ARTICLE.ROOT} element={<Articles />} />
           <Route path="/articles/:id" element={<ArticleDetail />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/profile/:userId" element={<Profile />} />
@@ -42,7 +43,7 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/membership" element={<Membership />} />
-          <Route path="/write" element={<WriteArticle />} />
+          <Route path={ROUTES_PATH.ARTICLE.WRITE} element={<WriteArticle />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

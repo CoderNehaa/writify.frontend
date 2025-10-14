@@ -26,10 +26,12 @@ apiInstance.interceptors.response.use(
 
     if (response) {
       if (response.status === 401) {
+        // TODO: logout user
         toast.error("Unauthorized");
         localStorage.clear();
+        sessionStorage.clear();
         if (window.location.href !== "/") {
-          window.location.href = ROUTES_PATH.AUTH.LOGIN;
+          window.location.href = "/";
         }
         console.error(
           response.data?.message || "Something went wrong. Try Later"
