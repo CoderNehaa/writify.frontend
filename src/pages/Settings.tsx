@@ -5,20 +5,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Crown, Trash2 } from "lucide-react";
+import { Crown, Trash2, User } from "lucide-react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import useAuthStore from "@/store/authStore";
 
 const Settings = () => {
   const [name, setName] = useState("Sarah Johnson");
-  const [bio, setBio] = useState("Full-stack developer passionate about web technologies.");
+  const [bio, setBio] = useState(
+    "Full-stack developer passionate about web technologies."
+  );
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { currentUser } = useAuthStore();
 
   const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +57,7 @@ const Settings = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1 py-8">
         <div className="container max-w-4xl">
           <h1 className="text-4xl font-bold mb-8">Settings</h1>
@@ -70,13 +80,21 @@ const Settings = () => {
                 <CardContent>
                   <form onSubmit={handleProfileUpdate} className="space-y-6">
                     <div className="flex items-center gap-4">
-                      <Avatar className="h-20 w-20">
-                        <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" />
-                        <AvatarFallback>SJ</AvatarFallback>
-                      </Avatar>
-                      <Button type="button" variant="outline">
-                        Change Avatar
-                      </Button>
+                      {currentUser.avatar ? (
+                        <Avatar className="h-24 w-24">
+                          <AvatarImage
+                            src={currentUser.avatar}
+                            alt={currentUser.name}
+                          />
+                          <AvatarFallback className="text-2xl">
+                            {currentUser.name}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <div className="border-gray-500 border-4 p-2 rounded-full">
+                          <User size={42} className="text-gray-500" />
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -138,7 +156,9 @@ const Settings = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="confirm-password">Confirm New Password</Label>
+                      <Label htmlFor="confirm-password">
+                        Confirm New Password
+                      </Label>
                       <Input
                         id="confirm-password"
                         type="password"
@@ -156,7 +176,9 @@ const Settings = () => {
 
               <Card className="border-destructive">
                 <CardHeader>
-                  <CardTitle className="text-destructive">Danger Zone</CardTitle>
+                  <CardTitle className="text-destructive">
+                    Danger Zone
+                  </CardTitle>
                   <CardDescription>
                     Irreversible actions for your account
                   </CardDescription>
@@ -206,15 +228,21 @@ const Settings = () => {
                     <h3 className="font-semibold mb-4">Usage</h3>
                     <div className="space-y-3">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Articles Posted</span>
+                        <span className="text-muted-foreground">
+                          Articles Posted
+                        </span>
                         <span className="font-medium">5 / 10</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Shares Remaining</span>
+                        <span className="text-muted-foreground">
+                          Shares Remaining
+                        </span>
                         <span className="font-medium">3 / 5</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Daily Title Recommendations</span>
+                        <span className="text-muted-foreground">
+                          Daily Title Recommendations
+                        </span>
                         <span className="font-medium">1 / 3</span>
                       </div>
                     </div>
