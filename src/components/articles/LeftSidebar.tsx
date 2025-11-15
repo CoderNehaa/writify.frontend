@@ -23,7 +23,7 @@ const navigationItems = [
 // Mock following users
 const mockFollowingUsers: IUser[] = [
   {
-    id: "1",
+    _id: "1",
     name: "Sarah Johnson",
     username: "sarahj",
     email: "sarah@example.com",
@@ -37,7 +37,7 @@ const mockFollowingUsers: IUser[] = [
     articlesPosted: 45,
   },
   {
-    id: "2",
+    _id: "2",
     name: "Michael Chen",
     username: "mchen",
     email: "michael@example.com",
@@ -51,7 +51,7 @@ const mockFollowingUsers: IUser[] = [
     articlesPosted: 32,
   },
   {
-    id: "3",
+    _id: "3",
     name: "Emma Williams",
     username: "emmaw",
     email: "emma@example.com",
@@ -104,8 +104,8 @@ export const LeftSidebar = ({ followingUsers = mockFollowingUsers }: LeftSidebar
             <div className="space-y-3">
               {followingUsers.map((user) => (
                 <Link
-                  key={user.id}
-                  to={`/profile/${user.id}`}
+                  key={user._id}
+                  to={`/profile/${user._id}`}
                   className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted transition-colors"
                 >
                   <Avatar className="h-8 w-8">
