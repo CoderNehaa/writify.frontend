@@ -24,7 +24,7 @@ const Profile = () => {
       ? setUser(currentUser)
       : setUser({
           _id: "1",
-          name: "Sarah Johnson",
+          fullName: "Sarah Johnson",
           email: "sarah@johnson.com",
           username: "sarahj",
           avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
@@ -75,9 +75,9 @@ const Profile = () => {
               <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
                 {user.avatar ? (
                   <Avatar className="h-24 w-24">
-                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarImage src={user.avatar} alt={user.fullName} />
                     <AvatarFallback className="text-2xl">
-                      {user.name}
+                      {user.fullName}
                     </AvatarFallback>
                   </Avatar>
                 ) : (
@@ -87,7 +87,7 @@ const Profile = () => {
                 )}
 
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold mb-1">{user.name}</h1>
+                  <h1 className="text-2xl font-bold mb-1">{user.fullName}</h1>
                   <p className="text-muted-foreground mb-2">@{user.username}</p>
                   <p className="text-foreground mb-4">{user.bio}</p>
 

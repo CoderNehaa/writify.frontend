@@ -2,19 +2,27 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
-import { verifySchema } from "@/types/yupSchema";
+import { verifySchema } from "@/constants/yup-validator";
 import { verifyService } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { BookOpen, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { ROUTES_PATH } from "@/utils/routesPath";
+import useAuthStore from "@/store/authStore";
 
 const Verify = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { setCurrentUser } = useAuthStore();
   const email = searchParams.get("email");
 
   useEffect(() => {
@@ -26,7 +34,8 @@ const Verify = () => {
 
   const verifyMutation = useMutation({
     mutationFn: verifyService,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      setCurrentUser(res.data);
       toast.success("Account verified successfully!");
       navigate("/");
     },
@@ -93,14 +102,18 @@ const Verify = () => {
                   }
                 />
                 {formik.touched.otp && formik.errors.otp && (
-                  <p className="text-sm text-destructive">{formik.errors.otp}</p>
+                  <p className="text-sm text-destructive">
+                    {formik.errors.otp}
+                  </p>
                 )}
               </div>
 
               <Button
                 type="submit"
                 className="w-full"
-                disabled={!formik.isValid || !formik.dirty || verifyMutation.isPending}
+                disabled={
+                  !formik.isValid || !formik.dirty || verifyMutation.isPending
+                }
               >
                 {verifyMutation.isPending && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

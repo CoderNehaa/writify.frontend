@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 
 const apiInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 35000,
+  timeout: 10000,
+  withCredentials: true,
 });
 
 apiInstance.interceptors.request.use(
@@ -26,22 +27,14 @@ apiInstance.interceptors.response.use(
 
     if (response) {
       if (response.status === 401) {
-        toast.error("Unauthorized");
-        localStorage.clear();
-        if (window.location.href !== "/") {
-          window.location.href = ROUTES_PATH.AUTH.LOGIN;
-        }
+        toast.error("Your session has expired! Please login again");
         console.error(
           response.data?.message || "Something went wrong. Try Later"
         );
-      } else if (response.status === 400) {
+      } else {
         const errorMessage =
           response.data?.message || "Something went wrong. Try Later";
         toast.error(errorMessage);
-      } else {
-        console.error(
-          response.data?.message || "Something went wrong. Try Later"
-        );
       }
     } else {
       toast.error("Network error");
