@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BookOpen, Search, User } from "lucide-react";
 import useAuthStore from "@/store/authStore";
+
 
 export const Header = () => {
   const location = useLocation();
@@ -16,6 +16,7 @@ export const Header = () => {
     return null;
   }
 
+  console.log("cu-", currentUser)
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center gap-4">
@@ -36,25 +37,18 @@ export const Header = () => {
         )}
 
         <div
-          className={`flex items-center gap-4 flex-shrink-0 ${
-            !isArticlesPage ? "ml-auto" : ""
-          }`}
+          className={`flex items-center gap-4 flex-shrink-0 ${!isArticlesPage ? "ml-auto" : ""
+            }`}
         >
           {isAuthenticated ? (
             <Link to="/profile">
               {currentUser.avatar ? (
-                <Avatar className="h-24 w-24">
-                  <AvatarImage
-                    src={currentUser.avatar}
-                    alt={currentUser.name}
-                  />
-                  <AvatarFallback className="text-2xl">
-                    {currentUser.name}
-                  </AvatarFallback>
-                </Avatar>
+                <img src={currentUser.avatar} alt={currentUser.username || "user"} />
               ) : (
-                <div className="border-gray-500 border-2 p-1 rounded-full">
-                  <User size={18} className="text-gray-500" />
+                <div className="h-10 w-10 border-black border-2">
+                  <span className="text-2xl">
+                    {currentUser.username[0].toUpperCase()}
+                  </span>
                 </div>
               )}
             </Link>

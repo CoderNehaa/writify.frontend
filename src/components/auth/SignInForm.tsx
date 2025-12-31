@@ -24,12 +24,12 @@ import useAuthStore from "@/store/authStore";
 
 const SignInForm = () => {
   const navigate = useNavigate();
-  const { setCurrentUser } = useAuthStore();
+  const { setCredentials } = useAuthStore();
   const [showSignInPassword, setShowSignInPassword] = useState(false);
   const { mutate, isPending } = useMutation({
     mutationFn: (data: ISignInPayload) => signinService(data),
     onSuccess: (res) => {
-      setCurrentUser(res.data.user);
+      setCredentials(res.data);
       toast.success("Signed in successfully!");
       navigate("/");
     },

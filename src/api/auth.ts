@@ -3,9 +3,7 @@ import apiInstance from "./instance";
 
 export const signinService = async (
   payload: ISignInPayload
-): Promise<
-  IResponse<{ user: IUser; accessToken: string; refreshToken: string }>
-> => {
+): Promise<IResponse<ILoginResponseData>> => {
   return await apiInstance.post(apiEndpoints.auth.login, payload);
 };
 
@@ -22,6 +20,8 @@ export const checkUsernameService = async (username: string) => {
   return res.data.usernameAvailable;
 };
 
-export const verifyService = async (payload: IVerifyPayload):Promise<IResponse<IUser>> => {
+export const verifyService = async (
+  payload: IVerifyPayload
+): Promise<IResponse<IUser>> => {
   return await apiInstance.post(apiEndpoints.auth.verify, payload);
 };

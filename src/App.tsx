@@ -28,7 +28,7 @@ import NotFound from "./pages/NotFound";
 import Verify from "./pages/Verify";
 
 const App = () => {
-  const { currentUser, setCurrentUser } = useAuthStore();
+  const { setCurrentUser } = useAuthStore();
   async function getCurrentUser() {
     try {
       const res = await userProfileService();
@@ -39,10 +39,10 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (!currentUser && !window.location.href.includes("auth")) {
+    if (!window.location.href.includes("auth")) {
       getCurrentUser();
     }
-  }, [currentUser]);
+  }, []);
 
   return (
     <TooltipProvider>
@@ -85,7 +85,7 @@ const App = () => {
             }
           />
           <Route path={ROUTES_PATH.AUTH.LOGIN} element={<Auth />} />
-          <Route path={"/auth/verify"} element={<Verify />} />
+          <Route path={ROUTES_PATH.AUTH.VERIFY} element={<Verify />} />
           <Route path={ROUTES_PATH.ABOUT} element={<About />} />
           <Route path={ROUTES_PATH.CONTACT} element={<Contact />} />
           <Route path={ROUTES_PATH.PRIVACY} element={<Privacy />} />

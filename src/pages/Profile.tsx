@@ -1,23 +1,29 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArticleCard } from "@/components/articles/ArticleCard";
-import { Users, FileText, Flag, User } from "lucide-react";
+import { Users, FileText, Flag, User, LogOutIcon } from "lucide-react";
 import useAuthStore from "@/store/authStore";
 import { useEffect, useState } from "react";
 
 const Profile = () => {
   const { userId } = useParams();
-  const { currentUser } = useAuthStore();
+  const { currentUser, setCurrentUser } = useAuthStore();
   const isOwnProfile = !userId
     ? true
     : userId === currentUser._id
-    ? true
-    : false;
+      ? true
+      : false;
   const [user, setUser] = useState<IUser | null>(null);
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    setCurrentUser(null);
+    navigate("/");
+  }
 
   useEffect(() => {
     isOwnProfile
@@ -164,6 +170,11 @@ const Profile = () => {
               )}
             </Tabs>
           </div>
+          <Button
+            onClick={handleLogout}
+            className="bg-red-600 text-white font-semibold hover:bg-red-300">
+            Logout <LogOutIcon className="font-semibold" />
+          </Button>
         </div>
       </main>
 

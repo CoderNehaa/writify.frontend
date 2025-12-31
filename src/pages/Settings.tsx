@@ -145,7 +145,7 @@ const Settings = () => {
                         {/* Pencil Icon */}
                         <button
                           type="button"
-                          className="absolute bottom-0 left-0 bg-white bg-opacity-20 p-1 rounded-full shadow"
+                          className="absolute bottom-0 right-0 bg-white bg-opacity-90 p-1 rounded-full shadow"
                           onClick={() => fileInputRef?.click()}
                         >
                           <Pencil size={16} />
@@ -155,7 +155,7 @@ const Settings = () => {
                         {previewImage && (
                           <button
                             type="button"
-                            className="absolute top-0 right-0 bg-white bg-opacity-80 p-1 rounded-full shadow"
+                            className="absolute top-0 right-0 bg-white bg-opacity-90 p-1 rounded-full shadow"
                             onClick={handleRemoveImage}
                           >
                             <X size={16} />

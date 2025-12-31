@@ -2,7 +2,8 @@ export const ROUTES_PATH = {
   AUTH: {
     LOGIN: "/auth",
     SIGNP: "/auth?mode=signup",
-    VERIFY: (email: string = "") => `/auth/verify?email=${email}`,
+    VERIFY: "/auth/verify",
+    VERIFY_EMAIL: (email: string = "") => `/auth/verify?email=${email}`,
   },
   ARTICLE: {
     ROOT: "/articles",
