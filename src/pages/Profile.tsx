@@ -33,6 +33,10 @@ const Profile = () => {
     return <div>User not found</div>;
   }
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -42,12 +46,18 @@ const Profile = () => {
           <div className="max-w-4xl mx-auto">
             <div className="bg-gradient-card rounded-lg p-8 shadow-card mb-8">
               <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src={user.profilePicture} alt={user.name} />
-                  <AvatarFallback className="text-2xl">
-                    {user.username[0]}
-                  </AvatarFallback>
-                </Avatar>
+                {user.avatar ? (
+                  <Avatar className="h-24 w-24">
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback className="text-2xl">
+                      {user.name}
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <div className="border-gray-500 border-4 p-2 rounded-full">
+                    <User size={42} className="text-gray-500" />
+                  </div>
+                )}
 
                 <div className="flex-1">
                   <h1 className="text-3xl font-bold mb-1">{user.name}</h1>
@@ -114,7 +124,7 @@ const Profile = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {articles.map((article) => (
                     <ArticleCard key={article.id} article={article} />
-                  ))}
+                  ))} */}
                 </div>
               </TabsContent>
 

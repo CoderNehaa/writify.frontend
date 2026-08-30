@@ -4,15 +4,18 @@ interface IUser {
   username: string;
   fullName: string;
   bio?: string;
-  createdAt: string;
+  isPremium?: boolean;
+  createdAt?: string;
+  followersCount?: number;
+  followingCount?: number;
   articlesCount?: number;
   sharesRemaining?: number;
   articlesPosted?: number;
-  profilePicture?: string;
+  isFollowing?: boolean;
 }
 
 interface IMembershipPlan {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   interval: "monthly" | "yearly";
@@ -21,7 +24,7 @@ interface IMembershipPlan {
 }
 
 interface ITransaction {
-  id: string;
+  _id: string;
   type: "membership" | "article_purchase";
   amount: number;
   description: string;
@@ -30,7 +33,7 @@ interface ITransaction {
 }
 
 interface INotification {
-  id: string;
+  _id: string;
   type: "follow" | "article" | "hashtag";
   title: string;
   message: string;
