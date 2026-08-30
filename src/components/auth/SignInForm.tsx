@@ -20,13 +20,16 @@ import FacebookIcon from "@/icons/Facebook";
 import { useMutation } from "@tanstack/react-query";
 import { signinService } from "@/api/auth";
 import { toast } from "react-toastify";
+import useAuthStore from "@/store/authStore";
 
 const SignInForm = () => {
   const navigate = useNavigate();
+  const { setCurrentUser } = useAuthStore();
   const [showSignInPassword, setShowSignInPassword] = useState(false);
   const { mutate, isPending } = useMutation({
     mutationFn: (data: ISignInPayload) => signinService(data),
-    onSuccess: (data) => {
+    onSuccess: (res) => {
+      setCurrentUser(res.data);
       toast.success("Signed in successfully!");
       navigate("/");
     },

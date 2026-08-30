@@ -2,15 +2,15 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BookOpen, Search } from "lucide-react";
+import { BookOpen, Search, User } from "lucide-react";
+import useAuthStore from "@/store/authStore";
 
 export const Header = () => {
   const location = useLocation();
   const isAuthPage = location.pathname === "/auth";
   const isArticlesPage = location.pathname === "/articles";
-  
-  // TODO: Replace with actual auth state
-  const isAuthenticated = false;
+  const { currentUser } = useAuthStore();
+  const isAuthenticated = !!currentUser;
 
   if (isAuthPage) {
     return null;
@@ -30,21 +30,33 @@ export const Header = () => {
           <div className="flex-1 max-w-2xl mx-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search articles..."
-                className="pl-10"
-              />
+              <Input placeholder="Search articles..." className="pl-10" />
             </div>
           </div>
         )}
 
-        <div className={`flex items-center gap-4 flex-shrink-0 ${!isArticlesPage ? 'ml-auto' : ''}`}>
+        <div
+          className={`flex items-center gap-4 flex-shrink-0 ${
+            !isArticlesPage ? "ml-auto" : ""
+          }`}
+        >
           {isAuthenticated ? (
             <Link to="/profile">
-              <Avatar className="h-9 w-9 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
-                <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" />
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
+              {currentUser.avatar ? (
+                <Avatar className="h-24 w-24">
+                  <AvatarImage
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                  />
+                  <AvatarFallback className="text-2xl">
+                    {currentUser.name}
+                  </AvatarFallback>
+                </Avatar>
+              ) : (
+                <div className="border-gray-500 border-2 p-1 rounded-full">
+                  <User size={18} className="text-gray-500" />
+                </div>
+              )}
             </Link>
           ) : (
             <>
