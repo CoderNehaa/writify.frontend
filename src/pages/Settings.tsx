@@ -22,16 +22,17 @@ import ConfirmationModal from "@/components/common/ConfirmationModal";
 import { Form, Formik } from "formik";
 import { updateAccountSchema } from "@/constants/yup-validator";
 import { useMutation } from "@tanstack/react-query";
-import { userDeleteService, userEditService } from "@/api/user";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_PATH } from "@/utils/routesPath";
+import withAuth from "@/hoc/withAuth";
+import { deleteUserByIdService, updateUserByIdService } from "@/api/user";
 
 const Settings = () => {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useAuthStore();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const { mutate: deleteMutate, isPending: deletePending } = useMutation({
-    mutationFn: () => userDeleteService(currentUser._id),
+    mutationFn: () => deleteUserByIdService(currentUser._id),
     onSuccess: (res) => {
       toast.success(res.message || "Account deleted successfully!");
       setCurrentUser(null);
@@ -40,7 +41,7 @@ const Settings = () => {
   });
 
   const { mutate: updateMutate, isPending: updatePending } = useMutation({
-    mutationFn: (payload: FormData) => userEditService(payload),
+    mutationFn: (payload: FormData) => updateUserByIdService(currentUser._id, payload),
     onSuccess: (res) => {
       toast.success(res.message || "Account updated successfully!");
     },
@@ -91,6 +92,7 @@ const Settings = () => {
     return null;
   }
 
+  // TODO:Show confirmation modal for delete
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -255,4 +257,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default withAuth(Settings);

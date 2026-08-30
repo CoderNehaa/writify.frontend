@@ -32,7 +32,7 @@ export const signUpSchema = Yup.object({
     .required("Confirm password is required"),
 });
 
-export const verifySchema = Yup.object({
+export const verifyOTPSchema = Yup.object({
   otp: Yup.string()
     .matches(/^[0-9]{6}$/, "OTP must be exactly 6 digits")
     .required("OTP is required"),

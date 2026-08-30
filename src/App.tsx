@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Import from files
 import { ROUTES_PATH } from "./utils/routesPath";
-import { userProfileService } from "./api/user";
+import { getProfileService } from "./api/user";
 import useAuthStore from "./store/authStore";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -31,7 +31,7 @@ const App = () => {
   const { setCurrentUser } = useAuthStore();
   async function getCurrentUser() {
     try {
-      const res = await userProfileService();
+      const res = await getProfileService();
       setCurrentUser(res.data);
     } catch (e) {
       console.log("Failed to fetch user!");

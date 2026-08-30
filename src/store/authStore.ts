@@ -1,11 +1,11 @@
-import { storageKeys } from "@/types/enums";
+import { logOutService } from "@/api/auth";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 interface AuthStore {
   currentUser: IUser | null;
   setCurrentUser: (user: IUser | null) => void;
-  setCredentials: (data: ILoginResponseData) => void;
+  handleLogout: () => void;
 }
 
 const useAuthStore = create<AuthStore>()(
@@ -13,10 +13,12 @@ const useAuthStore = create<AuthStore>()(
     (set, get) => ({
       currentUser: null,
       setCurrentUser: (user) => set({ currentUser: user }),
-      setCredentials: (data: ILoginResponseData) => {
-        set({ currentUser: data.user });
-        localStorage.setItem(storageKeys.AUTH_TOKEN, data.accessToken);
-        localStorage.setItem(storageKeys.REFRESH_TOKEN, data.refreshToken);
+      handleLogout: async () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        set({ currentUser: null });
+        window.location.href = "/";
+        await logOutService();
       },
     }),
     {

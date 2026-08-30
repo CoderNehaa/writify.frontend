@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
-import { verifySchema } from "@/constants/yup-validator";
-import { verifyService } from "@/api/auth";
+import { verifyOTPSchema } from "@/types/yupSchema";
+import { verifyAccountService } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,26 +21,31 @@ import useAuthStore from "@/store/authStore";
 
 const Verify = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const { setCurrentUser } = useAuthStore();
-  const email = searchParams.get("email");
+  const [signupData, setSignupData] = useState({
+    email: "",
+    message: "",
+  });
 
   useEffect(() => {
-    if (!email) {
+    const temp = JSON.parse(localStorage.getItem("signupResponse"));
+    if (!temp.email && !temp.message) {
       toast.error("Email is required for verification");
       navigate(ROUTES_PATH.AUTH.LOGIN);
     }
-  }, [email, navigate]);
+    setSignupData({
+      email: temp.email,
+      message: temp.message,
+    });
+  }, []);
 
-  const verifyMutation = useMutation({
-    mutationFn: verifyService,
-    onSuccess: (res) => {
-      setCurrentUser(res.data);
-      toast.success("Account verified successfully!");
+  const { mutate, isPending } = useMutation({
+    mutationFn: verifyAccountService,
+    onSuccess: (res: IResponse<IUser>) => {
+      toast.success(res.message);
       navigate("/");
-    },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Verification failed");
+      setCurrentUser(res.data);
+      localStorage.clear();
     },
   });
 
@@ -48,11 +53,11 @@ const Verify = () => {
     initialValues: {
       otp: "",
     },
-    validationSchema: verifySchema,
+    validationSchema: verifyOTPSchema,
     onSubmit: (values) => {
-      if (email) {
-        verifyMutation.mutate({
-          email,
+      if (signupData.email) {
+        mutate({
+          email: signupData.email,
           otp: values.otp,
         });
       }
@@ -70,16 +75,15 @@ const Verify = () => {
           </div>
           <h1 className="text-3xl font-bold mb-2">Verify Your Account</h1>
           <p className="text-muted-foreground">
-            We've sent a 6-digit OTP to your email
+            {" "}
+            Check your email for the verification code
           </p>
         </div>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="text-center">
             <CardTitle>Enter OTP</CardTitle>
-            <CardDescription>
-              Check your email ({email}) for the verification code
-            </CardDescription>
+            <CardDescription>{signupData.message}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -111,13 +115,9 @@ const Verify = () => {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={
-                  !formik.isValid || !formik.dirty || verifyMutation.isPending
-                }
+                disabled={!formik.isValid || !formik.dirty || isPending}
               >
-                {verifyMutation.isPending && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Verify Account
               </Button>
             </form>
