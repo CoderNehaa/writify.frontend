@@ -6,7 +6,7 @@ export const getUserByIdService = async (userId: string): Promise<IUser> => {
   return res.data;
 };
 
-export const deleteUserByIdService = async (userId: string): Promise<IUser> => {
+export const deleteUserByIdService = async (userId: string): Promise<IResponse<IUser>> => {
   const res = await apiInstance.delete(apiEndpoints.userById(userId));
   return res.data;
 };
@@ -14,4 +14,11 @@ export const deleteUserByIdService = async (userId: string): Promise<IUser> => {
 export const getProfileService = async (): Promise<IResponse<IUser>> => {
   const res = await apiInstance.get(apiEndpoints.getProfile);
   return res.data;
+};
+
+export const updateUserByIdService = async (
+  userId: string,
+  payload: FormData
+): Promise<IResponse<IUser>> => {
+  return await apiInstance.put(apiEndpoints.userById(userId), payload);
 };
