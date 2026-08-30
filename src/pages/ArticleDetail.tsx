@@ -16,7 +16,7 @@ import {
   Clock,
   Lock,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 
 const ArticleDetail = () => {
   const { id } = useParams();

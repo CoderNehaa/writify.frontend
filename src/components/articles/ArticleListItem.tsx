@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Clock, Lock } from "lucide-react";
 
 interface ArticleListItemProps {
-  article: Article;
+  article: IArticle;
 }
 
 export const ArticleListItem = ({ article }: ArticleListItemProps) => {
