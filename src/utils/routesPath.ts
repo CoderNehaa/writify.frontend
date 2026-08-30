@@ -2,10 +2,20 @@ export const ROUTES_PATH = {
   AUTH: {
     LOGIN: "/auth",
     SIGNP: "/auth?mode=signup",
-    VERIFY: `/auth/verify`,
+    VERIFY: "/auth/verify",
+    VERIFY_EMAIL: (email: string = "") => `/auth/verify?email=${email}`,
   },
   ARTICLE: {
-    ROOT:"/articles/",
-    WRITE: "/article/write",
+    ROOT: "/articles",
+    WRITE: "/write",
+    ID: (articleId: string = "") => ``,
   },
+  CATEGORIES: "/categories",
+  PROFILE: (userId: string = "") => `/profile/:userId`,
+  SETTINGS: "/settings",
+  ABOUT: "/about",
+  CONTACT: "/contact",
+  PRIVACY: "/privacy",
+  TERMS: "/terms",
+  MEMBERSHIP: "/membership",
 };

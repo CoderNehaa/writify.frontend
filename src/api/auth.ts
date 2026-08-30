@@ -18,7 +18,9 @@ export const logOutService = async () => {
 };
 
 export const checkUsernameService = async (username: string) => {
-  const res = await apiInstance.post(apiEndpoints.checkUsername, { username });
+  const res = await apiInstance.post(apiEndpoints.checkUsername, {
+    username,
+  });
   return res.data.usernameAvailable;
 };
 

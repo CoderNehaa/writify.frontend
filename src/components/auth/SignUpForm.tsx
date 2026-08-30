@@ -14,7 +14,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-import { signUpSchema } from "@/types/yupSchema";
+import { signUpSchema } from "@/constants/yup-validator";
 import { SocialButton } from "./SocialButton";
 import GoogleIcon from "@/icons/Google";
 import FacebookIcon from "@/icons/Facebook";
@@ -108,9 +108,11 @@ const SignUpForm = () => {
             <Input
               id="signup-name"
               placeholder="John Doe"
+              value={signUpFormik.values.fullName}
+              onChange={signUpFormik.handleChange("fullName")}
               {...signUpFormik.getFieldProps("fullName")}
             />
-            {signUpFormik.touched.fullName && signUpFormik.errors.fullName && (
+            {signUpFormik.errors.fullName && (
               <p className="text-sm text-destructive">
                 {signUpFormik.errors.fullName}
               </p>
@@ -141,7 +143,7 @@ const SignUpForm = () => {
                 )}
               </div>
             </div>
-            {signUpFormik.touched.username && signUpFormik.errors.username && (
+            {signUpFormik.errors.username && (
               <p className="text-sm text-destructive">
                 {signUpFormik.errors.username}
               </p>

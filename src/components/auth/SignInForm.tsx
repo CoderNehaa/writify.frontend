@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff } from "lucide-react";
-import { signInSchema } from "@/types/yupSchema";
+import { signInSchema } from "@/constants/yup-validator";
 import { SocialButton } from "./SocialButton";
 import GoogleIcon from "@/icons/Google";
 import FacebookIcon from "@/icons/Facebook";

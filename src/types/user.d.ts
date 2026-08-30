@@ -3,6 +3,7 @@ interface IUser {
   email: string;
   username: string;
   fullName: string;
+  avatar?: string;
   bio?: string;
   isPremium?: boolean;
   createdAt?: string;
@@ -12,6 +13,12 @@ interface IUser {
   sharesRemaining?: number;
   articlesPosted?: number;
   isFollowing?: boolean;
+}
+
+interface IUpdateForm {
+  username: string;
+  bio: string;
+  fullName: string;
 }
 
 interface IMembershipPlan {
