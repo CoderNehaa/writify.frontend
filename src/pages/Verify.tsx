@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
-import { verifyOTPSchema } from "@/types/yupSchema";
 import { verifyAccountService } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +17,7 @@ import { BookOpen, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { ROUTES_PATH } from "@/utils/routesPath";
 import useAuthStore from "@/store/authStore";
+import { verifyOTPSchema } from "@/constants/yup-validator";
 
 const Verify = () => {
   const navigate = useNavigate();
