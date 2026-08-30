@@ -74,6 +74,7 @@ const Settings = () => {
     toast.error("Account deletion will be implemented");
   };
 
+  // TODO:Show confirmation modal for delete
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -286,4 +287,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default withAuth(Settings);

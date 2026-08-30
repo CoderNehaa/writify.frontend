@@ -5,60 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArticleCard } from "@/components/articles/ArticleCard";
-import { Users, FileText, Flag, User } from "lucide-react";
+import { Users, FileText, Flag } from "lucide-react";
 import useAuthStore from "@/store/authStore";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getUserByIdService } from "@/api/user";
+import { useState } from "react";
+import withAuth from "@/hoc/withAuth";
 
 const Profile = () => {
-  const { userId } = useParams();
   const { currentUser } = useAuthStore();
-  const isOwnProfile = !userId
-    ? true
-    : userId === currentUser._id
-    ? true
-    : false;
-  const [user, setUser] = useState<IUser | null>(null);
+  const userId = useParams().userId || currentUser?._id || "";
+  const isOwnProfile = currentUser?._id === userId ? true : false;
+  const [articles, setArticles] = useState([]);
 
-  useEffect(() => {
-    isOwnProfile
-      ? setUser(currentUser)
-      : setUser({
-          _id: "1",
-          name: "Sarah Johnson",
-          email: "sarah@johnson.com",
-          username: "sarahj",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-          bio: "Full-stack developer passionate about web technologies. Writing about React, TypeScript, and modern web development.",
-          followersCount: 1250,
-          followingCount: 340,
-          articlesCount: 45,
-          isFollowing: false,
-        });
-  }, [userId]);
-
-  const mockArticles: IArticle[] = [
-    {
-      id: "1",
-      title: "Getting Started with React and TypeScript",
-      description:
-        "Learn how to build type-safe React applications using TypeScript.",
-      content: "",
-      author: user,
-      category: {
-        id: "1",
-        name: "Technology",
-        slug: "technology",
-        articleCount: 1250,
-      },
-      tags: ["react", "typescript", "webdev"],
-      isPaid: false,
-      likes: 234,
-      commentsCount: 45,
-      createdAt: "2024-01-15T10:00:00Z",
-      updatedAt: "2024-01-15T10:00:00Z",
-      readTime: 8,
+  const { data: user } = useQuery({
+    queryKey: ["user-profile", userId],
+    queryFn: async () => {
+      if (currentUser?._id == userId) {
+        return currentUser;
+      } else {
+        return await getUserByIdService(userId);
+      }
     },
-  ];
+  });
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
 
   if (!user) {
     return null;
@@ -149,7 +122,7 @@ const Profile = () => {
 
               <TabsContent value="articles" className="mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* {mockArticles.map((article) => (
+                  {articles.map((article) => (
                     <ArticleCard key={article.id} article={article} />
                   ))} */}
                 </div>
@@ -172,4 +145,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withAuth(Profile);

@@ -2,8 +2,7 @@ interface IUser {
   _id: string;
   email: string;
   username: string;
-  name: string;
-  avatar?: string;
+  fullName: string;
   bio?: string;
   isPremium?: boolean;
   createdAt?: string;

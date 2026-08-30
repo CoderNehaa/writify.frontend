@@ -29,9 +29,9 @@ const SignInForm = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: ISignInPayload) => signinService(data),
     onSuccess: (res) => {
-      setCurrentUser(res.data);
       toast.success("Signed in successfully!");
       navigate("/");
+      setCurrentUser(res.data);
     },
   });
 
